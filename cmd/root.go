@@ -33,5 +33,5 @@ func Execute() {
 
 func init() {
 	// check for -log switch, if -log text is passed, use text logging
-	rootCmd.Flags().StringP("log", "l", "json", "Log format: json or text")
+	rootCmd.PersistentFlags().StringP("log", "l", "json", "Log format: json or text")
 }
