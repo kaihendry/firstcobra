@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	// JSON logging is the default
 	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stderr, nil)))
 	cmd.Execute()
 }
