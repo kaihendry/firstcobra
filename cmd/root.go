@@ -11,7 +11,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use: "firstcobra",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		log, err := cmd.Flags().GetString("log")
+		log, err := cmd.PersistentFlags().GetString("log")
 		if err != nil {
 			return err
 		}
@@ -36,5 +36,5 @@ func Execute() {
 func init() {
 	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
 	// check for -log switch, if -log text is passed, use text logging
-	rootCmd.Flags().StringP("log", "l", "json", "Log format: json or text")
+	rootCmd.PersistentFlags().StringP("log", "l", "json", "Log format: json or text")
 }
