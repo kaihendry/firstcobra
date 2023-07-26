@@ -1,5 +1,8 @@
 test:
-	go run . sla --log text
+	go run . --log text sla
 
-rtest:
+rj:
+	go run . --log json
+
+rt:
 	go run . --log text

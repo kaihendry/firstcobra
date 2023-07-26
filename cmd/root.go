@@ -10,6 +10,17 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use: "firstcobra",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		log, err := cmd.Flags().GetString("log")
+		if err != nil {
+			return err
+		}
+		if log == "text" {
+			slog.SetDefault(slog.New(slog.NewTextHandler(os.Stdout, nil)))
+		}
+		slog.Info("root called", "log", log)
+		return nil
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -20,18 +31,10 @@ func Execute() {
 		slog.Error("failed to execute", "err", err)
 		os.Exit(1)
 	}
-	// check for -log switch, if -log text is passed, use text logging
-	log, err := rootCmd.Flags().GetString("log")
-	if err != nil {
-		slog.Error("failed to get log flag", "err", err)
-	}
-	if log == "text" {
-		slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, nil)))
-	}
-	slog.Info("parsed args", "log", log)
 }
 
 func init() {
+	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
 	// check for -log switch, if -log text is passed, use text logging
-	rootCmd.PersistentFlags().StringP("log", "l", "json", "Log format: json or text")
+	rootCmd.Flags().StringP("log", "l", "json", "Log format: json or text")
 }
